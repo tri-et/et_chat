@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "597321230241",
+    "firebase_url": "https://fir-ec113.firebaseio.com",
+    "project_id": "fir-ec113",
+    "storage_bucket": "fir-ec113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:597321230241:android:1b7829f2ac180d28",
+        "android_client_info": {
+          "package_name": "com.example.et_chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "597321230241-fd10na4pu7pa9sjv3n7m1asene7q3i1h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfFyyKErxob2DypG5faq9H9RbEsXIqgW8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "597321230241-fd10na4pu7pa9sjv3n7m1asene7q3i1h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
