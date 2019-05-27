@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:collection';
 
 class LoginPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -69,6 +71,12 @@ class LoginPage extends StatelessWidget {
                         password: passController.text)
                     .then((value) {
                   this._saveUid(value.uid);
+                  Map<String, String> userInfo = new HashMap();
+                  userInfo["status"] = "online";
+                  Firestore.instance
+                      .collection("Users")
+                      .document(value.uid)
+                      .updateData(userInfo);
                   Navigator.pushReplacementNamed(context, '/etapp');
                 });
               },

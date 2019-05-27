@@ -4,8 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../widgets/chatItemLeft.dart';
 import '../widgets/chatItemRight.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Chat extends StatefulWidget {
   final String uid;
@@ -20,49 +19,44 @@ class _ChatState extends State<Chat> {
   String userName = "";
   String uidFriend = "";
   String uidUser = "";
+  String uidChat = "testing";
   FirebaseAuth auth;
-  DatabaseReference reference = FirebaseDatabase.instance.reference();
-
   final msgController = TextEditingController();
+  CollectionReference referenceChat = Firestore.instance.collection("Chats");
+  CollectionReference referenceHis = Firestore.instance.collection("Histories");
   Widget _buildListItem(BuildContext context, dynamic message) {
+    print(message.data["message"]);
     return this.uidUser == message["sender"]
         ? ChatItemRight(message, imgCurrentUser)
         : ChatItemLeft(message, img);
   }
 
-  _readCurrentUid() async {
-    final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString("currentUid");
-    setState(() {
-      this.uidUser = value;
-      _getCurrentUserInfo(value);
-    });
-  }
-
-  _getCurrentUserInfo(uid) {
-    reference.child("Users").child(uid).once().then((DataSnapshot snapshot) {
-      setState(() {
-        imgCurrentUser = snapshot.value["img"];
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    _readCurrentUid();
-    setState(() {
-      uidFriend = widget.uid;
-    });
-    reference
-        .child("Users")
-        .child(widget.uid)
-        .once()
-        .then((DataSnapshot snapshot) {
+    _getCurrentUserInfo();
+    Firestore.instance
+        .collection("Users")
+        .document(widget.uid)
+        .get()
+        .then((DocumentSnapshot snapshot) {
       setState(() {
-        img = snapshot.value["img"];
-        userName = snapshot.value["userName"];
+        img = snapshot.data["img"];
+        userName = snapshot.data["userName"];
       });
+    });
+  }
+
+  void _getCurrentUserInfo() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    _generateChannel(user.uid, widget.uid);
+    setState(() {
+      this.uidUser = user.uid;
+    });
+    DocumentSnapshot userInfo =
+        await Firestore.instance.collection("Users").document(user.uid).get();
+    setState(() {
+      imgCurrentUser = userInfo.data["img"];
     });
   }
 
@@ -72,24 +66,33 @@ class _ChatState extends State<Chat> {
     obMsg["receiver"] = widget.uid;
     obMsg["message"] = msgController.text;
     obMsg["timestamp"] = new DateTime.now().millisecondsSinceEpoch.toString();
-    reference
-        .child("Chats")
-        .child(this.generateChannel())
-        .push()
-        .set(obMsg)
+    referenceChat
+        .document(this.uidChat)
+        .collection("Messages")
+        .document()
+        .setData(obMsg)
         .then((onValue) {
+      obMsg["name"] = userName;
+      obMsg["img"] = img;
+      referenceHis
+          .document(uidUser)
+          .collection("Histories")
+          .document(this.uidChat)
+          .setData(obMsg);
       this.msgController.clear();
     });
   }
 
-  generateChannel() {
-    String uidChat = "";
-    if (uidFriend.compareTo(uidUser) == 1) {
-      uidChat = uidFriend + uidUser;
+  void _generateChannel(currentUid, friendUid) {
+    String channelGenerate = "";
+    if (friendUid.compareTo(currentUid) == 1) {
+      channelGenerate = friendUid + currentUid;
     } else {
-      uidChat = uidUser + uidFriend;
+      channelGenerate = currentUid + friendUid;
     }
-    return uidChat;
+    setState(() {
+      uidChat = channelGenerate;
+    });
   }
 
   @override
@@ -138,24 +141,21 @@ class _ChatState extends State<Chat> {
             child: Container(
               color: Color(0XFFF1DBDB),
               child: StreamBuilder(
-                stream: FirebaseDatabase.instance
-                    .reference()
-                    .child("Chats")
-                    .child(this.generateChannel())
-                    .onValue,
-                builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
-                  if (snapshot.hasData &&
-                      snapshot.data.snapshot.value != null) {
-                    Map map = snapshot.data.snapshot.value;
-                    List dataSorted = map.values.toList();
-                    dataSorted.sort((a, b) {
-                      return b["timestamp"].compareTo(a["timestamp"]);
-                    });
+                stream: Firestore.instance
+                    .collection("Chats")
+                    .document(this.uidChat)
+                    .collection("Messages")
+                    .orderBy("timestamp", descending: true)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
                     return ListView.builder(
                       reverse: true,
-                      itemCount: map.values.toList().length,
+                      itemCount: snapshot.data.documents.length,
                       itemBuilder: (BuildContext context, int index) =>
-                          _buildListItem(context, dataSorted[index]),
+                          _buildListItem(
+                              context, snapshot.data.documents[index]),
                     );
                   } else {
                     return Center(
@@ -217,11 +217,4 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
-}
-
-class Item {
-  String message;
-  String receiver;
-  String sender;
-  String timestamp;
 }

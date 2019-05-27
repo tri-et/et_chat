@@ -2,7 +2,7 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingPage extends StatefulWidget {
@@ -12,22 +12,11 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   String uidCurrentUser = "";
-  DataSnapshot currentUser;
   _readUid() async {
     final prefs = await SharedPreferences.getInstance();
     final uid = prefs.getString("currentUid");
     setState(() {
       uidCurrentUser = uid;
-      FirebaseDatabase.instance
-          .reference()
-          .child("Users")
-          .child(uid)
-          .once()
-          .then((user) {
-        setState(() {
-          currentUser = user;
-        });
-      });
     });
   }
 
@@ -44,13 +33,12 @@ class _SettingPageState extends State<SettingPage> {
       child: RaisedButton(
         child: Text("Sign Out"),
         onPressed: () {
-          Map<dynamic, dynamic> user = currentUser.value;
-          user["status"] = "offline";
-          DatabaseReference reference = FirebaseDatabase.instance
-              .reference()
-              .child("Users")
-              .child(uidCurrentUser);
-          reference.set(user);
+          Map<String, String> userInfo = new HashMap();
+          userInfo["status"] = "offline";
+          Firestore.instance
+              .collection("Users")
+              .document(uidCurrentUser)
+              .updateData(userInfo);
           FirebaseAuth.instance.signOut();
           Navigator.pushReplacementNamed(context, "/");
         },

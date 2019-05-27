@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../widgets/contactItem.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ContactsPage extends StatelessWidget {
   Widget _buildListItem(BuildContext context, dynamic user) {
@@ -10,14 +10,14 @@ class ContactsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
-      stream: FirebaseDatabase.instance.reference().child("Users").onValue,
-      builder: (BuildContext context, AsyncSnapshot<Event> snapshot) {
+      stream: Firestore.instance.collection("Users").snapshots(),
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasData) {
-          Map map = snapshot.data.snapshot.value;
           return ListView.builder(
-              itemCount: map.values.toList().length,
-              itemBuilder: (BuildContext context, int index) =>
-                  _buildListItem(context, map.values.toList()[index]));
+            itemCount: snapshot.data.documents.length,
+            itemBuilder: (BuildContext context, int index) =>
+                _buildListItem(context, snapshot.data.documents[index]),
+          );
         } else {
           return Center(
               child: Text(

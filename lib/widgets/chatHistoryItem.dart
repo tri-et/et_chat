@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:et_chat/theme.dart';
 import 'package:flutter/material.dart';
 import '../pages/chat.dart';
 
 class ChatHistoryItem extends StatelessWidget {
+  final DocumentSnapshot itemHistory;
+  ChatHistoryItem(this.itemHistory);
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +29,9 @@ class ChatHistoryItem extends StatelessWidget {
         child: Row(
           children: <Widget>[
             CircleAvatar(
-              backgroundImage: ExactAssetImage("assets/avatar.jpg"),
+              backgroundImage: itemHistory.data["img"] == null
+                  ? ExactAssetImage("assets/avatar.jpg")
+                  : NetworkImage(itemHistory.data["img"]),
               minRadius: 30,
               maxRadius: 30,
             ),
@@ -37,13 +42,13 @@ class ChatHistoryItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Text(
-                    "John Pham",
+                    itemHistory.data["name"],
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16.0,
                     ),
                   ),
-                  Text("Nhau",
+                  Text(itemHistory.data["message"],
                       style: TextStyle(
                           color: Colors.black38, fontStyle: FontStyle.italic)),
                 ],

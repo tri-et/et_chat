@@ -19,9 +19,6 @@ class Avatar extends StatelessWidget {
         Positioned(
           top: 40.0,
           right: 1.0,
-          // child: CustomPaint(
-          //   painter: DrawCircle(),
-          // ),
           child: Icon(
             Icons.fiber_manual_record,
             color: this.status == "offline" ? Colors.grey : Colors.green,

@@ -3,7 +3,7 @@ import 'dart:collection';
 import 'package:flutter/material.dart';
 import '../theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignupPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -83,16 +83,15 @@ class SignupPage extends StatelessWidget {
                     email: emailController.text, password: passController.text);
                 if (user != null) {
                   String uid = user.uid;
-                  DatabaseReference reference = FirebaseDatabase.instance
-                      .reference()
-                      .child("Users")
-                      .child(uid);
+                  DocumentReference reference =
+                      Firestore.instance.collection("Users").document(uid);
                   Map<String, String> userInfo = new HashMap();
                   userInfo["id"] = uid;
                   userInfo["userName"] = userNameController.text;
                   userInfo["img"] =
                       "https://avatarfiles.alphacoders.com/124/thumb-124140.png";
-                  reference.set(userInfo);
+                  userInfo["status"] = "offline";
+                  reference.setData(userInfo);
                   Navigator.pushReplacementNamed(context, "/");
                 }
               },
@@ -118,6 +117,20 @@ class SignupPage extends StatelessWidget {
                 ],
               ),
               color: secondary,
+            ),
+            SizedBox(height: 30.0),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/');
+              },
+              child: Text(
+                "Click to Login Page",
+                style: TextStyle(
+                  color: secondary,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ],
         ),
