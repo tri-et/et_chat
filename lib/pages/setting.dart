@@ -28,21 +28,25 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-      child: RaisedButton(
-        child: Text("Sign Out"),
-        onPressed: () {
-          Map<String, String> userInfo = new HashMap();
-          userInfo["status"] = "offline";
-          Firestore.instance
-              .collection("Users")
-              .document(uidCurrentUser)
-              .updateData(userInfo);
-          FirebaseAuth.instance.signOut();
-          Navigator.pushReplacementNamed(context, "/");
-        },
-      ),
+    return Column(
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+          child: RaisedButton(
+            child: Text("Sign Out"),
+            onPressed: () {
+              Map<String, String> userInfo = new HashMap();
+              userInfo["status"] = "offline";
+              Firestore.instance
+                  .collection("Users")
+                  .document(uidCurrentUser)
+                  .updateData(userInfo);
+              FirebaseAuth.instance.signOut();
+              Navigator.pushReplacementNamed(context, "/");
+            },
+          ),
+        ),
+      ],
     );
   }
 }

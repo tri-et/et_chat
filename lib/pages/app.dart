@@ -21,9 +21,6 @@ class _ETPageState extends State<ETPage> {
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.currentUser().then((onValue) {
-      print(onValue);
-    });
   }
 
   @override

@@ -24,9 +24,11 @@ class ContactItem extends StatelessWidget {
       child: GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Chat(user["id"])));
+            context,
+            MaterialPageRoute(
+              builder: (BuildContext context) => Chat(user["id"]),
+            ),
+          );
         },
         child: Row(
           children: <Widget>[

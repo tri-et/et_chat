@@ -20,12 +20,7 @@ class ChatHistoryItem extends StatelessWidget {
         ),
       ),
       child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (BuildContext context) => Chat("sdsdsds")));
-        },
+        onTap: () {},
         child: Row(
           children: <Widget>[
             CircleAvatar(
