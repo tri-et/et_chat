@@ -25,25 +25,55 @@ class _ContactsPageState extends State<ContactsPage> {
         appBar: AppBar(
           backgroundColor: secondary,
           elevation: 0.0,
-          title: Container(
-            margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
-            child: TextField(
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Color.fromRGBO(255, 255, 255, .45),
-                hintText: "Type a text",
-                contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-                hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                suffixIcon: Icon(Icons.search),
-                border: new OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(24.0),
+          title: Row(
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(00.0, 8.0, 00.0, 8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color.fromRGBO(255, 255, 255, .45),
+                      hintText: "Type a text",
+                      contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+                      hintStyle: TextStyle(fontStyle: FontStyle.italic),
+                      suffixIcon: Icon(Icons.search),
+                      border: new OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(24.0),
+                        ),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
                   ),
-                  borderSide: BorderSide.none,
                 ),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.person_add),
+                iconSize: 32.0,
+                onPressed: () {},
+              )
+            ],
           ),
+          // title: Container(
+          //   margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+          //   child: TextField(
+          //     decoration: InputDecoration(
+          //       filled: true,
+          //       fillColor: Color.fromRGBO(255, 255, 255, .45),
+          //       hintText: "Type a text",
+          //       contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+          //       hintStyle: TextStyle(fontStyle: FontStyle.italic),
+          //       suffixIcon: Icon(Icons.search),
+          //       border: new OutlineInputBorder(
+          //         borderRadius: BorderRadius.all(
+          //           Radius.circular(24.0),
+          //         ),
+          //         borderSide: BorderSide.none,
+          //       ),
+          //     ),
+          //   ),
+          // ),
         ),
         body: StreamBuilder(
           stream: Firestore.instance.collection("Users").snapshots(),
