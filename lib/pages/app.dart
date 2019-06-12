@@ -4,6 +4,7 @@ import 'contacts.dart';
 import 'chatHistory.dart';
 import 'setting.dart';
 import '../theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ETPage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class ETPage extends StatefulWidget {
 }
 
 class _ETPageState extends State<ETPage> {
+  //final TextEditingController _filter = new TextEditingController();
   int _selectedPage = 0;
   bool isShowAppBar = true;
   final _pageOptions = [
@@ -18,39 +20,62 @@ class _ETPageState extends State<ETPage> {
     ChatHistoryPage(),
     SettingPage(),
   ];
-  @override
-  void initState() {
-    super.initState();
-  }
+  // String _searchText = "";
+  // List names = new List();
+  // List filteredNames = new List();
+  // Icon _searchIcon = Icon(Icons.search);
+  // Widget _appBarTitle = new Text('Type a text');
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   _filter.addListener(() {
+  //     setState(() {
+  //       _searchText = _filter.text;
+  //     });
+  //   });
+  //   @override
+  //   void dispose() {
+  //     _filter.dispose();
+  //     super.dispose();
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: isShowAppBar
-          ? AppBar(
-              backgroundColor: secondary,
-              elevation: 0.0,
-              title: Container(
-                margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
-                child: TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color.fromRGBO(255, 255, 255, .45),
-                    hintText: "Type a text",
-                    contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
-                    hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                    suffixIcon: Icon(Icons.search),
-                    border: new OutlineInputBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(24.0),
-                      ),
-                      borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
+      // appBar: isShowAppBar
+      //     ? AppBar(
+      //         backgroundColor: secondary,
+      //         elevation: 0.0,
+      //         title: Container(
+      //           margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+      //           child: TextField(
+      //             decoration: InputDecoration(
+      //               filled: true,
+      //               fillColor: Color.fromRGBO(255, 255, 255, .45),
+      //               hintText: "Type a text",
+      //               contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+      //               hintStyle: TextStyle(fontStyle: FontStyle.italic),
+      //               suffixIcon: IconButton(
+      //                 icon: Icon(_searchText == "" ? Icons.search : Icons.close),
+      //                 onPressed: () {
+      //                   setState(() {
+      //                     _searchText = "";
+      //                   });
+      //                   _filter.clear();
+      //                 },
+      //               ),
+      //               border: new OutlineInputBorder(
+      //                 borderRadius: BorderRadius.all(
+      //                   Radius.circular(24.0),
+      //                 ),
+      //                 borderSide: BorderSide.none,
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
       body: _pageOptions[_selectedPage],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: secondary,

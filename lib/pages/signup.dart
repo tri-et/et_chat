@@ -10,34 +10,42 @@ class SignupPage extends StatelessWidget {
   final emailController = TextEditingController();
   final passController = TextEditingController();
   final userNameController = TextEditingController();
+  final FocusNode myFocusNode = new FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: primary,
       body: Container(
-        padding: EdgeInsets.fromLTRB(40.0, 80.0, 40.0, 20.0),
-        child: Column(
+        padding: EdgeInsets.fromLTRB(50, 0, 50, 0),
+        child: ListView(
           children: <Widget>[
-            Image.asset(
-              "assets/Logo_ET.png",
-              width: 192.0,
+            Padding(
+              padding: EdgeInsets.only(right: 25, bottom: 0),
+              child: Image.asset('assets/Logo_ET.png'),
             ),
             SizedBox(height: 30.0),
-            TextField(
-              controller: emailController,
-              decoration: InputDecoration(
-                filled: true,
-                fillColor: Colors.white,
-                hintText: "Email",
-                hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                prefixIcon: Icon(Icons.person),
-                contentPadding: EdgeInsets.all(14.0),
-                border: new OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(24.0),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(25),
+                color: Colors.white,
+              ),
+              child: TextField(
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Colors.grey,
                   ),
-                  borderSide: BorderSide.none,
+                  hintStyle: TextStyle(
+                      color: Colors.grey[400],
+                      fontStyle: FontStyle.italic,
+                      fontSize: 17),
+                  hintText: "Email",
+                  border: InputBorder.none,
                 ),
+                keyboardType: TextInputType.emailAddress,
+                controller: emailController,
+                onSubmitted: (String) =>
+                    FocusScope.of(context).requestFocus(myFocusNode),
               ),
             ),
             SizedBox(height: 15.0),
@@ -118,17 +126,16 @@ class SignupPage extends StatelessWidget {
               ),
               color: secondary,
             ),
-            SizedBox(height: 30.0),
-            GestureDetector(
-              onTap: () {
+            SizedBox(height: 10.0),
+            FlatButton(
+              onPressed: () {
                 Navigator.pushReplacementNamed(context, '/');
               },
-              child: Text(
-                "Click to Login Page",
+              child: new Text(
+                'Click here to Login Page',
                 style: TextStyle(
+                  fontSize: 14.0,
                   color: secondary,
-                  fontSize: 18.0,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),

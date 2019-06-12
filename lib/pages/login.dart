@@ -19,7 +19,7 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: primary,
       body: Container(
-        padding: EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 20.0),
+        padding: EdgeInsets.fromLTRB(40.0, 50.0, 40.0, 0.0),
         child: Column(
           children: <Widget>[
             Image.asset(
@@ -62,7 +62,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 15.0),
+            SizedBox(height: 12.0),
             RaisedButton(
               onPressed: () {
                 _auth
