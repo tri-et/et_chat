@@ -13,7 +13,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FirebaseUser currentUser;
   final searchController = TextEditingController();
   TextEditingController controller = new TextEditingController();
-  String filter;
+  String filter="";
   @override
   void initState() {
     controller.addListener(() {
@@ -50,8 +50,12 @@ class _ContactsPageState extends State<ContactsPage> {
                       hintText: "Type a text",
                       contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
                       hintStyle: TextStyle(fontStyle: FontStyle.italic),
-                      suffixIcon:
-                          Icon(filter == null ? Icons.search : Icons.close),
+                      suffixIcon: IconButton(
+                          onPressed: () {
+                            controller.clear();
+                          },
+                          icon:
+                              Icon(filter == "" ? Icons.search : Icons.close)),
                       border: new OutlineInputBorder(
                         borderRadius: BorderRadius.all(
                           Radius.circular(24.0),
@@ -79,16 +83,11 @@ class _ContactsPageState extends State<ContactsPage> {
               return ListView.builder(
                   itemCount: snapshot.data.documents.length,
                   itemBuilder: (BuildContext context, int index) {
-                    if (filter == null) {
+                    if (filter == "") {
                       return _buildListItem(
                           context, snapshot.data.documents[index]);
                     } else if (snapshot.data.documents[index].data["userName"]
                         .contains(filter.toLowerCase())) {
-                      return _buildListItem(
-                          context, snapshot.data.documents[index]);
-                    }
-                    if (snapshot.data.documents[index].data["userName"]
-                        .contains(filter.toUpperCase())) {
                       return _buildListItem(
                           context, snapshot.data.documents[index]);
                     } else {
