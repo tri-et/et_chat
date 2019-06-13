@@ -26,6 +26,31 @@ class _ETPageState extends State<ETPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // appBar: isShowAppBar
+      //     ? AppBar(
+      //         backgroundColor: secondary,
+      //         elevation: 0.0,
+      //         title: Container(
+      //           margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
+      //           child: TextField(
+      //             decoration: InputDecoration(
+      //               filled: true,
+      //               fillColor: Color.fromRGBO(255, 255, 255, .45),
+      //               hintText: "Type a text",
+      //               contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
+      //               hintStyle: TextStyle(fontStyle: FontStyle.italic),
+      //               suffixIcon: Icon(Icons.search),
+      //               border: new OutlineInputBorder(
+      //                 borderRadius: BorderRadius.all(
+      //                   Radius.circular(24.0),
+      //                 ),
+      //                 borderSide: BorderSide.none,
+      //               ),
+      //             ),
+      //           ),
+      //         ),
+      //       )
+      //     : null,
       body: _pageOptions[_selectedPage],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: secondary,

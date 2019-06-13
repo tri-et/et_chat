@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "1044536854461",
-    "firebase_url": "https://et-app-e413a.firebaseio.com",
-    "project_id": "et-app-e413a",
-    "storage_bucket": "et-app-e413a.appspot.com"
+    "project_number": "584621724968",
+    "firebase_url": "https://etapchat.firebaseio.com",
+    "project_id": "etapchat",
+    "storage_bucket": "etapchat.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1044536854461:android:f99b9bdd0e6bdbcc",
+        "mobilesdk_app_id": "1:584621724968:android:de37b219a4bea8e4",
         "android_client_info": {
           "package_name": "com.example.et_chat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1044536854461-62aka7kcg5tcel26rfbevgtf5piu6anh.apps.googleusercontent.com",
+          "client_id": "584621724968-81t6cjmb0ldfv3cjrsn032nn8qh88k1b.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBknMfvmYc7J0JPz-2RzkC3HGFLbHHzPoM"
+          "current_key": "AIzaSyAlAHpB7339h_VkcGLMwHqTl68tN9HvaJE"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1044536854461-62aka7kcg5tcel26rfbevgtf5piu6anh.apps.googleusercontent.com",
+              "client_id": "584621724968-81t6cjmb0ldfv3cjrsn032nn8qh88k1b.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
