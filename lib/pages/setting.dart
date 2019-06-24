@@ -16,10 +16,14 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   AvatarModal modal = new AvatarModal();
   String uidCurrentUser = "";
+  DocumentSnapshot _userInfo;
   _readUid() async {
     final prefs = await SharedPreferences.getInstance();
     final uid = prefs.getString("currentUid");
+    DocumentSnapshot userInfo =
+        await Firestore.instance.collection("Users").document(uid).get();
     setState(() {
+      _userInfo = userInfo;
       uidCurrentUser = uid;
     });
   }
