@@ -47,13 +47,13 @@ class _MyHomePageState extends State<MyHomePage> {
       onUnknownRoute: (RouteSettings settings) {
         return MaterialPageRoute(
           builder: (BuildContext context) => Scaffold(
-                appBar: AppBar(
-                  title: Text('Unknow'),
-                ),
-                body: Center(
-                  child: Text('Unknow'),
-                ),
-              ),
+            appBar: AppBar(
+              title: Text('Unknow'),
+            ),
+            body: Center(
+              child: Text('Unknow'),
+            ),
+          ),
         );
       },
     );
