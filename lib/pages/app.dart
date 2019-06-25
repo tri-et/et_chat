@@ -13,6 +13,7 @@ class ETPage extends StatefulWidget {
 class _ETPageState extends State<ETPage> {
   int _selectedPage = 0;
   bool isShowAppBar = true;
+  static GlobalKey<ScaffoldState> global = GlobalKey();
   final _pageOptions = [
     ContactsPage(),
     ChatHistoryPage(),
@@ -26,6 +27,7 @@ class _ETPageState extends State<ETPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: global,
       body: _pageOptions[_selectedPage],
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: secondary,
