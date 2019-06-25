@@ -10,18 +10,25 @@ class AvatarModal {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('View Profile Picture'),
+                title: Text('View profile picture'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Select Profile Picture'),
+                title: Text('Take a picture'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Select a picture'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         });
