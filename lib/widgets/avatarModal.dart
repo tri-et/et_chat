@@ -24,11 +24,18 @@ class AvatarModal {
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Select Profile Picture'),
+                title: Text('Take a picture'),
                 onTap: () {
                   Navigator.pop(context);
                 },
               ),
+              ListTile(
+                leading: Icon(Icons.photo),
+                title: Text('Select a picture'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         });
