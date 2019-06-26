@@ -12,7 +12,7 @@ class AvatarModal {
                 leading: Icon(Icons.account_circle),
                 title: Text('View profile picture'),
                 onTap: () {
-                  Navigator.pop(context);
+                  showFullImageVer1(context);
                 },
               ),
               ListTile(
@@ -30,6 +30,29 @@ class AvatarModal {
                 },
               )
             ],
+          );
+        });
+  }
+
+  showFullImageVer1(BuildContext context) {
+    showDialog(
+        context: context,
+        barrierDismissible: true,
+        builder: (BuildContext context) {
+          return Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+            ),
+            body: Container(
+              child: Center(
+                child: Image.asset("assets/avatar.jpg"),
+              ),
+            ),
           );
         });
   }
