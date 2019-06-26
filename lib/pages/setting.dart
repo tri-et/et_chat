@@ -43,9 +43,9 @@ class _SettingPageState extends State<SettingPage> {
         children: <Widget>[
           Center(
             child: GestureDetector(
-              onTap: () => modal.showImageSelection(context),
+              onTap: () => modal.showImageSelection(context, _userInfo),
               child: CircleAvatar(
-                backgroundImage: ExactAssetImage("assets/avatar.jpg"),
+                backgroundImage: NetworkImage(_userInfo.data["img"]),
                 maxRadius: 60.0,
               ),
             ),
