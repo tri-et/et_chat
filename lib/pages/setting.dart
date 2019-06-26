@@ -1,5 +1,6 @@
 import 'dart:collection';
 
+import 'package:et_chat/widgets/avatarModal.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -13,11 +14,16 @@ class SettingPage extends StatefulWidget {
 }
 
 class _SettingPageState extends State<SettingPage> {
+  AvatarModal modal = new AvatarModal();
   String uidCurrentUser = "";
+  DocumentSnapshot _userInfo;
   _readUid() async {
     final prefs = await SharedPreferences.getInstance();
     final uid = prefs.getString("currentUid");
+    DocumentSnapshot userInfo =
+        await Firestore.instance.collection("Users").document(uid).get();
     setState(() {
+      _userInfo = userInfo;
       uidCurrentUser = uid;
     });
   }
@@ -30,11 +36,21 @@ class _SettingPageState extends State<SettingPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
-          child: RaisedButton(
+    return Container(
+      padding: EdgeInsets.only(top: 10.0),
+      margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
+      child: Column(
+        children: <Widget>[
+          Center(
+            child: GestureDetector(
+              onTap: () => modal.showImageSelection(context),
+              child: CircleAvatar(
+                backgroundImage: ExactAssetImage("assets/avatar.jpg"),
+                maxRadius: 60.0,
+              ),
+            ),
+          ),
+          RaisedButton(
             onPressed: () {
               Map<String, String> userInfo = new HashMap();
               userInfo["status"] = "offline";
@@ -68,8 +84,8 @@ class _SettingPageState extends State<SettingPage> {
             ),
             color: secondary,
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
