@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import './pages/login.dart';
 import './pages/app.dart';
 import './pages/signup.dart';
+import 'theme.dart';
 
 void main() => runApp(MyApp());
 
@@ -37,7 +38,7 @@ class _MyHomePageState extends State<MyHomePage> {
       theme: ThemeData(
         brightness: Brightness.light,
         primarySwatch: Colors.blue,
-        accentColor: Colors.deepPurple,
+        accentColor: secondary,
       ),
       routes: {
         '/': (BuildContext context) => LoginPage(),
