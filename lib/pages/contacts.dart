@@ -80,7 +80,7 @@ class _ContactsPageState extends State<ContactsPage> {
               ],
             )),
         body: ListView.builder(
-          itemCount: contacts.length,
+          itemCount: contacts == null ? 0 : contacts.length,
           itemBuilder: (context, int index) {
             if (txtSearchContact == "") {
               return _buildListItem(context, contacts[index]);
