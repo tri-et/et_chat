@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'avatarProfile.dart';
 
 class AvatarModal {
-  showImageSelection(BuildContext context) {
+  showImageSelection(BuildContext context, DocumentSnapshot userInfo) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
@@ -10,9 +12,14 @@ class AvatarModal {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.account_circle),
-                title: Text('View profile picture'),
+                title: Text('View Profile Picture'),
                 onTap: () {
                   Navigator.pop(context);
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              AvatarProfile(userInfo.data['img'])));
                 },
               ),
               ListTile(
