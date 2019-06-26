@@ -9,6 +9,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../theme.dart';
 
 class SettingPage extends StatefulWidget {
+  final String uid;
+  SettingPage({this.uid});
   @override
   _SettingPageState createState() => _SettingPageState();
 }
@@ -16,6 +18,9 @@ class SettingPage extends StatefulWidget {
 class _SettingPageState extends State<SettingPage> {
   AvatarModal modal = new AvatarModal();
   String uidCurrentUser = "";
+  String img = "";
+  String imgCurrentUser = "";
+  String userName = "";
   DocumentSnapshot _userInfo;
   _readUid() async {
     final prefs = await SharedPreferences.getInstance();
@@ -28,10 +33,22 @@ class _SettingPageState extends State<SettingPage> {
     });
   }
 
+  void _getCurrentUserInfo() async {
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    DocumentSnapshot userInfo =
+        await Firestore.instance.collection("Users").document(user.uid).get();
+    setState(() {
+      _userInfo = userInfo;
+      imgCurrentUser = userInfo.data["img"];
+      userName = userInfo.data["userName"];
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _readUid();
+    _getCurrentUserInfo();
   }
 
   @override
@@ -41,14 +58,25 @@ class _SettingPageState extends State<SettingPage> {
       margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
       child: Column(
         children: <Widget>[
+          SizedBox(
+            height: 50,
+          ),
           Center(
             child: GestureDetector(
               onTap: () => modal.showImageSelection(context),
               child: CircleAvatar(
-                backgroundImage: ExactAssetImage("assets/avatar.jpg"),
+                backgroundImage: NetworkImage(imgCurrentUser),
                 maxRadius: 60.0,
               ),
             ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+          ),
+          Text(userName,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          SizedBox(
+            height: 10,
           ),
           RaisedButton(
             onPressed: () {
