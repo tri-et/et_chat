@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'avatarProfile.dart';
 
 class AvatarModal {
-  showImageSelection(BuildContext context, DocumentSnapshot userInfo) {
+  DocumentSnapshot userInfo;
+  AvatarModal(this.userInfo);
+  showImageSelection(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (BuildContext context) {
