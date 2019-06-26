@@ -1,4 +1,6 @@
+import 'package:et_chat/pages/profile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as prefix0;
 
 class AvatarModal {
   showImageSelection(BuildContext context) {
@@ -12,14 +14,15 @@ class AvatarModal {
                 leading: Icon(Icons.account_circle),
                 title: Text('View profile picture'),
                 onTap: () {
-                  Navigator.pop(context);
+                 Navigator.pushNamed(context, "/profile");
+                  //Navigator.pop(context);
                 },
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
                 title: Text('Take a picture'),
                 onTap: () {
-                  Navigator.pop(context);
+                  Navigator.pop(context,Profile());
                 },
               ),
               ListTile(
