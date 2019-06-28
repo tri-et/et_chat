@@ -13,6 +13,7 @@ class _ContactsPageState extends State<ContactsPage> {
   FirebaseUser currentUser;
   final searchController = TextEditingController();
   String txtSearchContact = "";
+  List<DocumentSnapshot> contacts;
   @override
   void initState() {
     searchController.addListener(() {
@@ -22,6 +23,11 @@ class _ContactsPageState extends State<ContactsPage> {
     });
     super.initState();
     _getCurrentUser();
+    Firestore.instance.collection("Users").snapshots().listen((data) {
+      setState(() {
+        contacts = data.documents;
+      });
+    });
   }
 
   @override
@@ -73,29 +79,17 @@ class _ContactsPageState extends State<ContactsPage> {
                 )
               ],
             )),
-        body: StreamBuilder(
-          stream: Firestore.instance.collection("Users").snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-            if (snapshot.hasData) {
-              return ListView.builder(
-                  itemCount: snapshot.data.documents.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    if (txtSearchContact == "") {
-                      return _buildListItem(
-                          context, snapshot.data.documents[index]);
-                    } else {
-                      if (snapshot.data.documents[index].data["userName"]
-                          .contains(txtSearchContact)) {
-                        return _buildListItem(
-                            context, snapshot.data.documents[index]);
-                      } else {
-                        return Container();
-                      }
-                    }
-                  });
+        body: ListView.builder(
+          itemCount: contacts == null ? 0 : contacts.length,
+          itemBuilder: (context, int index) {
+            if (txtSearchContact == "") {
+              return _buildListItem(context, contacts[index]);
             } else {
-              return CircularProgressIndicator();
+              if (contacts[index].data["userName"].contains(txtSearchContact)) {
+                return _buildListItem(context, contacts[index]);
+              } else {
+                return Container();
+              }
             }
           },
         ),
