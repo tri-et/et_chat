@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 import '../widgets/contactItem.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class ContactsPage extends StatefulWidget {
   @override
@@ -10,10 +9,9 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  FirebaseUser currentUser;
   final searchController = TextEditingController();
   String txtSearchContact = "";
-  List<DocumentSnapshot> contacts;
+  List<DocumentSnapshot> _contactsData;
   @override
   void initState() {
     searchController.addListener(() {
@@ -21,18 +19,18 @@ class _ContactsPageState extends State<ContactsPage> {
         txtSearchContact = searchController.text;
       });
     });
-    super.initState();
-    _getCurrentUser();
-    Firestore.instance.collection("Users").snapshots().listen((data) {
+
+    _fetchContactsData().then((contacts) {
       setState(() {
-        contacts = data.documents;
+        _contactsData = contacts;
       });
     });
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (currentUser != null) {
+    if (_contactsData != null) {
       return Scaffold(
         appBar: AppBar(
             backgroundColor: secondary,
@@ -80,13 +78,15 @@ class _ContactsPageState extends State<ContactsPage> {
               ],
             )),
         body: ListView.builder(
-          itemCount: contacts == null ? 0 : contacts.length,
+          itemCount: _contactsData.length,
           itemBuilder: (context, int index) {
             if (txtSearchContact == "") {
-              return _buildListItem(context, contacts[index]);
+              return _buildListItem(context, _contactsData[index]);
             } else {
-              if (contacts[index].data["userName"].contains(txtSearchContact)) {
-                return _buildListItem(context, contacts[index]);
+              if (_contactsData[index]
+                  .data["userName"]
+                  .contains(txtSearchContact)) {
+                return _buildListItem(context, _contactsData[index]);
               } else {
                 return Container();
               }
@@ -95,7 +95,7 @@ class _ContactsPageState extends State<ContactsPage> {
         ),
       );
     } else {
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     }
   }
 
@@ -103,10 +103,9 @@ class _ContactsPageState extends State<ContactsPage> {
     return ContactItem(user);
   }
 
-  _getCurrentUser() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    setState(() {
-      currentUser = user;
-    });
+  Future<List<DocumentSnapshot>> _fetchContactsData() async {
+    QuerySnapshot contactsSnapshot =
+        await Firestore.instance.collection("Users").getDocuments();
+    return contactsSnapshot.documents;
   }
 }
