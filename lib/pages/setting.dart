@@ -1,6 +1,6 @@
 import 'dart:collection';
 
-import 'package:et_chat/widgets/avatarModal.dart';
+import 'package:et_chat/widgets/avatarMenu.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,14 +15,14 @@ class SettingPage extends StatefulWidget {
 
 class _SettingPageState extends State<SettingPage> {
   DocumentSnapshot _userInfo;
-  AvatarModal modal;
+  AvatarModal avatarMenu;
 
   @override
   void initState() {
     super.initState();
     _getCurrentUser();
   }
-
+   
   @override
   Widget build(BuildContext context) {
     if (_userInfo != null) {
@@ -31,17 +31,22 @@ class _SettingPageState extends State<SettingPage> {
         margin: EdgeInsets.only(top: MediaQuery.of(context).padding.top),
         child: Column(
           children: <Widget>[
+            SizedBox(height: 50,),
             Center(
               child: GestureDetector(
                 onTap: () {
-                  modal = new AvatarModal(_userInfo);
-                  return modal.showImageSelection(context);
+                  avatarMenu = new AvatarModal(_userInfo);
+                  showAvatarMenu();
                 },
                 child: CircleAvatar(
                   backgroundImage: NetworkImage(_userInfo.data["img"]),
                   maxRadius: 60.0,
                 ),
               ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
+              child: Text(_userInfo.data["userName"],style: TextStyle(fontSize: 20,fontWeight: FontWeight.bold ,fontStyle: FontStyle.italic),),
             ),
             RaisedButton(
               onPressed: () {
@@ -80,8 +85,8 @@ class _SettingPageState extends State<SettingPage> {
           ],
         ),
       );
-    } else {
-      return Center(child: CircularProgressIndicator());
+    }else {
+      return Center(child: Container());
     }
   }
 
@@ -93,5 +98,13 @@ class _SettingPageState extends State<SettingPage> {
     setState(() {
       _userInfo = userInfo;
     });
+  }
+  dynamic showAvatarMenu(){
+    showModalBottomSheet(
+      context: context,
+      builder: (context){
+        return avatarMenu;
+      }
+    );
   }
 }
