@@ -24,6 +24,7 @@ dependencies:
   shared_preferences:
   cloud_firestore: ^0.12.0
   scoped_model: ^1.0.1
+  image_picker: ^0.6.0+10
   # firebase_messaging: ^3.0.1
 
   # The following adds the Cupertino Icons font to your application.
