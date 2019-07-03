@@ -9,14 +9,14 @@ class ContactsPage extends StatefulWidget {
 }
 
 class _ContactsPageState extends State<ContactsPage> {
-  final searchController = TextEditingController();
-  String txtSearchContact = "";
+  final txtSearchController = TextEditingController();
+  String searchText = "";
   List<DocumentSnapshot> _contactsData;
   @override
   void initState() {
-    searchController.addListener(() {
+    txtSearchController.addListener(() {
       setState(() {
-        txtSearchContact = searchController.text;
+        searchText = txtSearchController.text;
       });
     });
 
@@ -42,7 +42,7 @@ class _ContactsPageState extends State<ContactsPage> {
                     margin: EdgeInsets.fromLTRB(20.0, 8.0, 20.0, 8.0),
                     child: TextField(
                       enableInteractiveSelection: false,
-                      controller: searchController,
+                      controller: txtSearchController,
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color.fromRGBO(255, 255, 255, .45),
@@ -50,14 +50,13 @@ class _ContactsPageState extends State<ContactsPage> {
                         contentPadding: EdgeInsets.fromLTRB(15.0, 0, 0, 0),
                         hintStyle: TextStyle(fontStyle: FontStyle.italic),
                         suffixIcon: IconButton(
-                          icon: Icon(txtSearchContact == ""
-                              ? Icons.search
-                              : Icons.close),
+                          icon: Icon(
+                              searchText == "" ? Icons.search : Icons.close),
                           onPressed: () {
                             setState(() {
-                              txtSearchContact = "";
+                              searchText = "";
                             });
-                            searchController.clear();
+                            txtSearchController.clear();
                           },
                         ),
                         border: new OutlineInputBorder(
@@ -80,16 +79,14 @@ class _ContactsPageState extends State<ContactsPage> {
         body: ListView.builder(
           itemCount: _contactsData.length,
           itemBuilder: (context, int index) {
-            if (txtSearchContact == "") {
-              return _buildListItem(context, _contactsData[index]);
+            if (searchText == "") {
+              return ContactItem(_contactsData[index]);
+            } else if (_contactsData[index]
+                .data["userName"]
+                .contains(searchText)) {
+              return ContactItem(_contactsData[index]);
             } else {
-              if (_contactsData[index]
-                  .data["userName"]
-                  .contains(txtSearchContact)) {
-                return _buildListItem(context, _contactsData[index]);
-              } else {
-                return Container();
-              }
+              return Container();
             }
           },
         ),
@@ -97,10 +94,6 @@ class _ContactsPageState extends State<ContactsPage> {
     } else {
       return Center(child: CircularProgressIndicator());
     }
-  }
-
-  Widget _buildListItem(BuildContext context, DocumentSnapshot user) {
-    return ContactItem(user);
   }
 
   Future<List<DocumentSnapshot>> _fetchContactsData() async {
