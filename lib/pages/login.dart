@@ -69,11 +69,7 @@ class LoginPage extends StatelessWidget {
                   _saveUidCurrentUser(user.uid);
                   Map<String, String> userInfo = new HashMap();
                   userInfo["status"] = "online";
-                  Firestore.instance
-                      .collection("Users")
-                      .document(user.uid)
-                      .updateData(userInfo)
-                      .then((_) {
+                  _updateCurrentUserInfo(userInfo, user.uid).then((_) {
                     Navigator.pushReplacementNamed(context, '/etapp');
                   });
                 });
@@ -142,5 +138,13 @@ class LoginPage extends StatelessWidget {
   Future<void> _saveUidCurrentUser(uid) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setString("uidCurrentUser", uid);
+  }
+
+  Future<void> _updateCurrentUserInfo(
+      Map<String, String> userInfo, String currentUserUid) {
+    return Firestore.instance
+        .collection("Users")
+        .document(currentUserUid)
+        .updateData(userInfo);
   }
 }
