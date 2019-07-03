@@ -9,10 +9,6 @@ class LoginPage extends StatelessWidget {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final emailController = TextEditingController();
   final passController = TextEditingController();
-  _saveUid(uid) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("currentUid", uid);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -69,15 +65,17 @@ class LoginPage extends StatelessWidget {
                     .signInWithEmailAndPassword(
                         email: emailController.text,
                         password: passController.text)
-                    .then((value) {
-                  this._saveUid(value.uid);
+                    .then((user) {
+                  _saveUidCurrentUser(user.uid);
                   Map<String, String> userInfo = new HashMap();
                   userInfo["status"] = "online";
                   Firestore.instance
                       .collection("Users")
-                      .document(value.uid)
-                      .updateData(userInfo);
-                  Navigator.pushReplacementNamed(context, '/etapp');
+                      .document(user.uid)
+                      .updateData(userInfo)
+                      .then((_) {
+                    Navigator.pushReplacementNamed(context, '/etapp');
+                  });
                 });
               },
               padding: EdgeInsets.fromLTRB(40.0, 11.0, 40.0, 11.0),
@@ -139,5 +137,10 @@ class LoginPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _saveUidCurrentUser(uid) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("uidCurrentUser", uid);
   }
 }

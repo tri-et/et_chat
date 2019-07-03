@@ -79,7 +79,7 @@ class _SettingPageState extends State<SettingPage> {
 
   Future _getCurrentUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String uid = prefs.getString("currentUid");
+    String uid = prefs.getString("uidCurrentUser");
     DocumentSnapshot userInfo =
         await Firestore.instance.collection("Users").document(uid).get();
     setState(() {
