@@ -1,6 +1,3 @@
-import 'dart:async';
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -29,14 +26,14 @@ class AvatarMenu extends StatelessWidget {
         ListTile(
           leading: Icon(Icons.camera_alt),
           title: Text('Take a picture'),
-          onTap: () async {
+          onTap: () {
             Navigator.pop(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.photo),
           title: Text('Select a picture'),
-          onTap: () async {
+          onTap: () {
             Navigator.pop(context);
           },
         )
