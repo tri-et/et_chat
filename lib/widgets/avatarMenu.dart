@@ -1,12 +1,25 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
 import 'avatarProfile.dart';
-
+import 'dart:io';
+import 'dart:async';
+import 'package:image_picker/image_picker.dart';
 class AvatarMenu extends StatelessWidget {
   final DocumentSnapshot userInfo;
+  AvatarMenu({this.userInfo,this.image});
+  final File image;
+  static Future getImageFromCamera() async {
+    File img = await ImagePicker.pickImage(source: ImageSource.camera);
+    print("Select from ${img.path}");
+    return img;
+  }
 
-  AvatarMenu({this.userInfo});
+  static Future getImageFromLibary() async {
+    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    print("Select from ${img.path}");
+    return img;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -28,6 +41,7 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Take a picture'),
           onTap: () {
             Navigator.pop(context);
+            getImageFromCamera();
           },
         ),
         ListTile(
@@ -35,6 +49,7 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Select a picture'),
           onTap: () {
             Navigator.pop(context);
+            getImageFromLibary();
           },
         )
       ],
