@@ -8,8 +8,9 @@ import 'avatarProfile.dart';
 
 class AvatarMenu extends StatelessWidget {
   final DocumentSnapshot userInfo;
+  final ImageSelected onImageSelected;
 
-  AvatarMenu({this.userInfo});
+  AvatarMenu({this.userInfo, this.onImageSelected});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,6 +32,8 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Take a picture'),
           onTap: () async {
             Navigator.pop(context);
+            File img = await _getImgFromCamera();
+            onImageSelected(img);
           },
         ),
         ListTile(
@@ -38,9 +41,21 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Select a picture'),
           onTap: () async {
             Navigator.pop(context);
+            File img = await _getImgFromgallery();
+            onImageSelected(img);
           },
         )
       ],
     );
   }
+
+  Future _getImgFromCamera() async {
+    return await ImagePicker.pickImage(source: ImageSource.camera);
+  }
+
+  Future _getImgFromgallery() async {
+    return await ImagePicker.pickImage(source: ImageSource.gallery);
+  }
 }
+
+typedef ImageSelected = void Function(File image);

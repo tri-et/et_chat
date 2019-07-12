@@ -1,7 +1,6 @@
 import 'package:et_chat/theme.dart';
 import 'package:et_chat/widgets/avatar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../widgets/chatItemLeft.dart';
 import '../widgets/chatItemRight.dart';

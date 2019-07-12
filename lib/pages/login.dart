@@ -69,7 +69,7 @@ class LoginPage extends StatelessWidget {
                   _saveUidCurrentUser(user.uid);
                   Map<String, String> userInfo = new HashMap();
                   userInfo["status"] = "online";
-                  _updateCurrentUserInfo(userInfo, user.uid).then((_) {
+                  _updateStatusCurrentUser(userInfo, user.uid).then((_) {
                     Navigator.pushReplacementNamed(context, '/etapp');
                   });
                 });
@@ -140,7 +140,7 @@ class LoginPage extends StatelessWidget {
     prefs.setString("uidCurrentUser", uid);
   }
 
-  Future<void> _updateCurrentUserInfo(
+  Future<void> _updateStatusCurrentUser(
       Map<String, String> userInfo, String currentUserUid) {
     return Firestore.instance
         .collection("Users")
