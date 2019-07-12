@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:et_chat/theme.dart';
 import 'package:flutter/material.dart';
-import '../pages/chat.dart';
 
 class ChatHistoryItem extends StatelessWidget {
   final DocumentSnapshot itemHistory;
