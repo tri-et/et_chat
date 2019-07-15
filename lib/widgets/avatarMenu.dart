@@ -32,8 +32,7 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Take a picture'),
           onTap: () async {
             Navigator.pop(context);
-            File img = await _getImgFromCamera();
-            onImageSelected(img);
+            onImageSelected(await _getImgFromCamera());
           },
         ),
         ListTile(
@@ -41,19 +40,18 @@ class AvatarMenu extends StatelessWidget {
           title: Text('Select a picture'),
           onTap: () async {
             Navigator.pop(context);
-            File img = await _getImgFromgallery();
-            onImageSelected(img);
+            onImageSelected(await _getImgFromgallery());
           },
         )
       ],
     );
   }
 
-  Future _getImgFromCamera() async {
+  Future<File> _getImgFromCamera() async {
     return await ImagePicker.pickImage(source: ImageSource.camera);
   }
 
-  Future _getImgFromgallery() async {
+  Future<File> _getImgFromgallery() async {
     return await ImagePicker.pickImage(source: ImageSource.gallery);
   }
 }

@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:et_chat/widgets/avatarMenu.dart';
 import 'package:flutter/material.dart';
@@ -36,6 +37,9 @@ class _SettingPageState extends State<SettingPage> {
                       builder: (BuildContext context) {
                         return AvatarMenu(
                           userInfo: _userInfo,
+                          onImageSelected: (File img) {
+                            print(img);
+                          },
                         );
                       });
                 },
